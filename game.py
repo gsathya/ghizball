@@ -1,8 +1,13 @@
 import pygame
 from pygame.locals import *
 
-import settings
-from settings import player1, player2
+from itertools import cycle, izip
+
+from settings import gamefont, gamemode, players
+from sprites import Paddle
+from locals import *
+
+paddles = []
 
 def init():
     pygame.init()
@@ -13,35 +18,25 @@ def init():
     pygame.display.set_caption('Ghizball')
 
 def gameloop():
-    screen = pygame.display.set_mode()
+    screen = pygame.display.get_surface()
+
+    for side, player in izip(cycle((SIDE_A, SIDE_B)), setting.players):
+        player['side'] = side
+        paddles.append(Paddle(player))
+
     while 1:
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
                 return
+            #should be able to rewrite and reduce the following code?
             elif event.type == KEYUP:
-                if event.key == player1['controls']['left']:
-                    #stop moving left
-                    pass
-                elif event.key == player1['controls']['right']:
-                    #stop moving right
-                    pass
-                elif event.key == player2['controls']['left']:
-                    #stop moving left
-                    pass
-                elif event.key == player2['controls']['right']:
-                    #stop moving right
-                    pass
+                if filter(lambda p: p.left == event.key, paddles):
+                    p[0].move(STOP, LEFT) #pseudocode
+                elif filter(lambda p: p.right == event.key, paddles):
+                    p[0].move(STOP, RIGHT)
             elif event.type == KEYDOWN:
-                if event.key == player1['controls']['left']:
-                    #start moving left
-                    pass
-                elif event.key == player1['controls']['right']:
-                    #start moving right
-                    pass
-                elif event.key == player2['controls']['left']:
-                    #start moving left
-                    pass
-                elif event.key == player2['controls']['right']:
-                    #start moving right
-                    pass
+                if filter(lambda p: p.left == event.key, paddles):
+                    p[0].move(START, RIGHT) #pseudocode
+                elif filter(lambda p: p.right == event.key, paddles):
+                    p[0].move(START, RIGHT) #pseudocode
