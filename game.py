@@ -29,14 +29,6 @@ def gameloop():
         for event in pygame.event.get():
             if event.type == QUIT:
                 return
-            #should be able to rewrite and reduce the following code?
-            elif event.type == KEYUP:
-                if filter(lambda p: p.left == event.key, paddles):
-                    p[0].move(STOP, LEFT) #pseudocode
-                elif filter(lambda p: p.right == event.key, paddles):
-                    p[0].move(STOP, RIGHT)
-            elif event.type == KEYDOWN:
-                if filter(lambda p: p.left == event.key, paddles):
-                    p[0].move(START, RIGHT) #pseudocode
-                elif filter(lambda p: p.right == event.key, paddles):
-                    p[0].move(START, RIGHT) #pseudocode
+            elif event.type == KEYUP || event.type == KEYDOWN:
+                if filter(lambda p: event.key == p.left || event.key == p.right, paddles):
+                    p[0].move(event.type, event.key) #pseudocode

@@ -1,8 +1,10 @@
+from pygame.locals import KEYUP, KEYDOWN
+
 SIDE_A = 1
 SIDE_B = 1
 
 LEFT = 101
 RIGHT = 102
 
-START = 201
-STOP = 202
+START = KEYDOWN
+STOP = KEYUP
